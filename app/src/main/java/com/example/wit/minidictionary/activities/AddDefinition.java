@@ -45,7 +45,7 @@ public class AddDefinition extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AddDefinition.
+     * @return A new instance of fragment AddDefinitionFragment.
      */
     // TODO: Rename and change types and number of parameters
     public static AddDefinition newInstance(String param1, String param2) {

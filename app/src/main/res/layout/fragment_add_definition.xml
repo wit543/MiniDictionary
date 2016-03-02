@@ -4,6 +4,19 @@
     android:layout_height="match_parent"
     tools:context=".activities.AddDefinition">
 
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_word_part_of_speech_spinner"></Spinner>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="translation"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="add here"/>
+
     <com.google.android.gms.plus.PlusOneButton xmlns:plus="http://schemas.android.com/apk/lib/com.google.android.gms.plus"
         android:id="@+id/plus_one_button"
         android:layout_width="wrap_content"
