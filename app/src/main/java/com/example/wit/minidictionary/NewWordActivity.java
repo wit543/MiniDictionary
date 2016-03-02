@@ -3,7 +3,9 @@ package com.example.wit.minidictionary;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.wit.minidictionary.R;
@@ -40,6 +42,10 @@ public class NewWordActivity extends AppCompatActivity {
                 finish();
             }
         });
+        Spinner spinner = (Spinner)findViewById(R.id.new_word_part_of_speech_spinner);
+        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this,R.array.type_of_part_of_speech,android.R.layout.simple_spinner_item);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(arrayAdapter);
     }
 
     private void saveWord(String word,String pronunciation,ArrayList<Definition> translations){
