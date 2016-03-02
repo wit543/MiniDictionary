@@ -1,6 +1,7 @@
 package com.example.wit.minidictionary.views;
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
         Word word = getItem(position);
         wordView.setText(word.getWord());
 
-
         return v;
     }
+
 }

@@ -17,6 +17,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/new_word_part_of_speech_spinner"></Spinner>
+    <fragment android:name="com.example.wit.minidictionary.AddDefinition"
+        android:id="@+id/article_fragment"
+        android:layout_weight="2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

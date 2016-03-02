@@ -1,4 +1,4 @@
-package com.example.wit.minidictionary.model;
+package com.example.wit.minidictionary.models;
 
 import com.example.wit.minidictionary.word.Word;
 
