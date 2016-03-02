@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/PartOfSpeechSubject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Part of speech"
+        android:textSize="20dp"
+        android:textColor="#000000" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_word_part_of_speech_spinner"
+        android:layout_below="@id/PartOfSpeechSubject"
+        android:layout_marginBottom="10dp"
+        ></Spinner>
+
+    <TextView
+        android:id="@+id/MeaningSubjecr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Meaning"
+        android:textSize="20dp"
+        android:layout_below="@id/new_word_part_of_speech_spinner"
+        android:textColor="#000000" />
+
+    <EditText
+        android:id="@+id/meaningField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Type Meaning Here"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/MeaningSubjecr" />
+
+
+</RelativeLayout>

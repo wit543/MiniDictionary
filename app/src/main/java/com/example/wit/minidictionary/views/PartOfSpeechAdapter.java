@@ -24,7 +24,7 @@ public class PartOfSpeechAdapter extends ArrayAdapter<PartOfSpeech> {
         View v = convertView;
         if(v==null){
             LayoutInflater vi = LayoutInflater.from(getContext());
-//            v = vi.inflate(android.R.layout.simple_spinner_dropdown_item);
+            v = vi.inflate(R.layout.translation_input , null);
         }
         return v;
     }
