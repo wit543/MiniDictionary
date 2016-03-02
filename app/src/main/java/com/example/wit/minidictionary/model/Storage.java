@@ -31,6 +31,6 @@ public class Storage {
                 words.remove(w);
     }
     public List<Word> loadWord(){
-        return words;
+        return words;+
     }
 }

@@ -1,5 +1,6 @@
 package com.example.wit.minidictionary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,9 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.GridView;
+
+import com.example.wit.minidictionary.views.WordAdapter;
+import com.example.wit.minidictionary.word.Word;
+
+import java.util.List;
 
 public class Home extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private List<Word> words;
+    private WordAdapter wordAdapter;
+    private GridView homeWordGrid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +37,8 @@ public class Home extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(Home.this,NewWord.class);
+                startActivity(intent);
             }
         });
 
@@ -40,6 +50,13 @@ public class Home extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        initializeComponent();
+    }
+
+    private void initializeComponent() {
+        homeWordGrid = (GridView)findViewById(R.id.home_words_grid);
+        WordAdapter wordAdapter = new WordAdapter(this,R.layout.word_cell,words);
+        homeWordGrid.setAdapter(wordAdapter);
     }
 
     @Override

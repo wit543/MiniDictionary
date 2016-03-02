@@ -5,4 +5,17 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string-array name="type_of_part_of_speech">
+        <item>noun</item>
+        <item>pronoun</item>
+        <item>adjective</item>
+        <item>determiner</item>
+        <item>adverb</item>
+        <item>verb</item>
+        <item>preposition</item>
+        <item>conjunction</item>
+        <item>interjection</item>
+    </string-array>
+
 </resources>
