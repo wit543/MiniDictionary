@@ -18,6 +18,7 @@ import android.widget.GridView;
 import com.example.wit.minidictionary.views.WordAdapter;
 import com.example.wit.minidictionary.word.Word;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Home extends AppCompatActivity
@@ -54,6 +55,8 @@ public class Home extends AppCompatActivity
     }
 
     private void initializeComponent() {
+        words = new ArrayList<Word>();
+        words.add(new Word("hello"));
         homeWordGrid = (GridView)findViewById(R.id.home_words_grid);
         WordAdapter wordAdapter = new WordAdapter(this,R.layout.word_cell,words);
         homeWordGrid.setAdapter(wordAdapter);

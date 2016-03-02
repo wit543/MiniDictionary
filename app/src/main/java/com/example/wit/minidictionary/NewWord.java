@@ -15,7 +15,7 @@ public class NewWord extends AppCompatActivity {
     }
 
     private void initComponent() {
-        Spinner spinner = (Spinner)findViewById(R.id.item_touch_helper_previous_elevation);
+        Spinner spinner = (Spinner)findViewById(R.id.new_word_part_of_speech_spinner);
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this,R.array.type_of_part_of_speech,android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(arrayAdapter);
