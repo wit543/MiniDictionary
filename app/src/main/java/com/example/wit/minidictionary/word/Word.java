@@ -14,8 +14,8 @@ public class Word {
         definitions = new ArrayList<Definition>();
     }
 
-    public void addDefinition(PartOfSpeech partOfSpeech, String definition){
-        definitions.add(new Definition(partOfSpeech,definition));
+    public void addDefinition(String partOfSpeech, String definition){
+        definitions.add(new Definition(PartOfSpeech.valueOf(partOfSpeech),definition));
     }
     public String getWord() {
         return word;

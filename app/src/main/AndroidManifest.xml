@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".NewWord"></activity>
+        <activity android:name=".NewDefinition"></activity>
     </application>
 
 </manifest>
