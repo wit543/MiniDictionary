@@ -1,7 +1,11 @@
 package com.example.wit.minidictionary.models;
 
+import android.content.Context;
+import android.content.ContextWrapper;
+
 import com.example.wit.minidictionary.word.Word;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -26,6 +26,13 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +78,30 @@ public class Home extends AppCompatActivity
     }
 
     private void initializeComponent() {
+        // save;
+        try {
+            FileOutputStream fos = openFileOutput("text",MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(this);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //load
+        try {
+            FileOutputStream fos = openFileOutput("text",MODE_PRIVATE);
+            ObjectInputStream fis = new ObjectInputStream(fos);
+            words = (List<Word>) fis.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         words = new ArrayList<Word>();
         words.add(new Word("hello"));
         homeWordGrid = (GridView) findViewById(R.id.home_words_grid);

@@ -7,8 +7,8 @@ public class Definition {
     private PartOfSpeech partOfSpeech;
     private String definition;
 
-    public Definition(PartOfSpeech partOfSpeech, String definition) {
-        this.partOfSpeech = partOfSpeech;
+    public Definition(String partOfSpeech, String definition) {
+        this.partOfSpeech = PartOfSpeech.valueOf(partOfSpeech);
         this.definition = definition;
     }
 
