@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.wit.minidictionary.R;
+import com.example.wit.minidictionary.models.Storage;
 import com.example.wit.minidictionary.views.WordAdapter;
 import com.example.wit.minidictionary.word.Word;
 import com.google.android.gms.appindexing.Action;
@@ -54,14 +55,7 @@ public class Home extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Home.this, NewWordActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -79,7 +73,7 @@ public class Home extends AppCompatActivity
 
     private void initializeComponent() {
         // save;
-        try {
+       /* try {
             FileOutputStream fos = openFileOutput("text",MODE_PRIVATE);
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(this);
@@ -102,10 +96,14 @@ public class Home extends AppCompatActivity
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        */
+
         words = new ArrayList<Word>();
-        words.add(new Word("hello"));
+
+
         homeWordGrid = (GridView) findViewById(R.id.home_words_grid);
-        WordAdapter wordAdapter = new WordAdapter(this, R.layout.word_cell, words);
+        wordAdapter = new WordAdapter(this, R.layout.word_cell, words);
         homeWordGrid.setAdapter(wordAdapter);
         homeWordGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -119,13 +117,24 @@ public class Home extends AppCompatActivity
                 Log.v("test ContextMenu", "menuInfo= " + menuInfo);
             }
         });
-//        homeWordGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.v("test onItemLongClick", "position= " + position + " id=" + id);
-//                return true;
-//            }
-//        });
+
+        homeWordGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("test onItemLongClick", "position= " + position + " id=" + id);
+                return true;
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Home.this, NewWordActivity.class);
+                startActivity(intent);
+            }
+        });
+
         registerForContextMenu(homeWordGrid);
 
     }
@@ -214,10 +223,11 @@ public class Home extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
+        this.updateWordList();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
+        /*client.connect();
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
                 "Home Page", // TODO: Define a title for the content shown.
@@ -228,7 +238,15 @@ public class Home extends AppCompatActivity
                 // TODO: Make sure this auto-generated app deep link URI is correct.
                 Uri.parse("android-app://com.example.wit.minidictionary/http/host/path")
         );
-        AppIndex.AppIndexApi.start(client, viewAction);
+        AppIndex.AppIndexApi.start(client, viewAction);*/
+    }
+
+    public void updateWordList(){
+        words.clear();
+        for(Word word: Storage.getInstance().loadWord()) {
+            words.add(word);
+        }
+        wordAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -250,4 +268,5 @@ public class Home extends AppCompatActivity
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
+
 }

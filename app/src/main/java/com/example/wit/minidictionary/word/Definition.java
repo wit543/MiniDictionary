@@ -4,11 +4,17 @@ package com.example.wit.minidictionary.word;
  * Created by WIT on 01-Mar-16.
  */
 public class Definition {
+    //private PartOfSpeech partOfSpeech;
     private PartOfSpeech partOfSpeech;
     private String definition;
 
     public Definition(String partOfSpeech, String definition) {
-        this.partOfSpeech = PartOfSpeech.valueOf(partOfSpeech);
+        this.partOfSpeech = PartOfSpeech.valueOf(partOfSpeech.toUpperCase());
+        this.definition = definition;
+    }
+
+    public Definition(PartOfSpeech partOfSpeech, String definition) {
+        this.partOfSpeech = partOfSpeech;
         this.definition = definition;
     }
 

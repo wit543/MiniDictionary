@@ -10,10 +10,13 @@
     tools:context="com.example.asus.minidictionary.activities.NewWordActivity">
 
 
+
+
     <TextView
         android:id="@+id/wordSubject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="Word"
         android:editable="false"
         android:textSize="20dp"
@@ -33,6 +36,7 @@
         android:id="@+id/pronunciationSubject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="Pronunciation"
         android:editable="false"
         android:textSize="20dp"
@@ -51,6 +55,7 @@
 
     <TextView
         android:id="@+id/translationSubject"
+        android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Translation"
@@ -59,11 +64,55 @@
         android:textColor="#000000"
         android:layout_below="@+id/pronunciationField"/>
 
+    //TABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+    <TextView
+        android:id="@+id/partOfSpeechSubject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"
+        android:text="Part of speech"
+        android:textSize="15dp"
+        android:layout_below="@id/translationSubject"
+        android:layout_marginLeft="10dp"
+        android:textColor="#000000" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/new_word_part_of_speech_spinner"
+        android:layout_below="@id/partOfSpeechSubject"
+        android:layout_marginLeft="10dp"
+        ></Spinner>
+
+    <TextView
+        android:id="@+id/meaningSubjecr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:text="Meaning"
+        android:textSize="15dp"
+        android:layout_below="@id/new_word_part_of_speech_spinner"
+        android:layout_marginLeft="10dp"
+        android:textColor="#000000" />
+
+    <EditText
+        android:id="@+id/meaningField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Type Meaning Here"
+        android:layout_marginLeft="10dp"
+        android:textSize="15dp"
+        android:layout_below="@+id/meaningSubjecr" />
+
+
+    //TABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
+
     <ListView
         android:id='@+id/transaltions_list_view'
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/translationSubject">
+        android:layout_below="@id/meaningField">
     </ListView>
 
     <Button

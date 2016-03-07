@@ -24,7 +24,7 @@ public class Word {
         return word;
     }
 
-    public ArrayList<Definition> getDefinition() {
+    public List<Definition> getDefinition() {
         return definitions;
     }
 

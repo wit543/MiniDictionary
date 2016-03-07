@@ -12,10 +12,7 @@
     tools:context=".activities.Home"
     tools:showIn="@layout/app_bar_home">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
+
     <GridView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

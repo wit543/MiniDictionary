@@ -21,6 +21,7 @@ public class Storage {
     public static Storage getInstance(){
         if(storage==null)
             storage = new Storage();
+
         return storage;
     }
     public void addWord(Word word){
