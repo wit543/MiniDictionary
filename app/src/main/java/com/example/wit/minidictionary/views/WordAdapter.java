@@ -58,7 +58,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
 
         TextView wordView = (TextView) v.findViewById(R.id.word);
         Word word = getItem(position);
-        wordView.setText(word.getWord());
+        wordView.setText(""+word.getWord());
 
         return v;
     }

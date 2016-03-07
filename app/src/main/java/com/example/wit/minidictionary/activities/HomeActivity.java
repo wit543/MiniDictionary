@@ -85,31 +85,33 @@ public class HomeActivity extends AppCompatActivity
 
     private void initializeComponent() {
         // save;
-//        try {
-//            FileOutputStream fos = openFileOutput("text",MODE_PRIVATE);
-//            ObjectOutputStream oos = new ObjectOutputStream(fos);
-//            oos.writeObject(this);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        words = new ArrayList<Word>();
+       /* try {
+            FileOutputStream fos = openFileOutput("text",MODE_PRIVATE);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(this);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //load
-//        try {
-//            FileOutputStream fos = openFileOutput("text",MODE_PRIVATE);
-//            ObjectOutputStream oos = new ObjectOutputStream(fos);
-//            FileInputStream fis = openFileInput("text");
-//            ObjectInputStream ois = new ObjectInputStream(fis);
-//            words = (List<Word>) ois.readObject();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (StreamCorruptedException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            FileOutputStream fos = openFileOutput("text",MODE_PRIVATE);
+            ObjectInputStream fis = new ObjectInputStream(fos);
+            words = (List<Word>) fis.readObject();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (StreamCorruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        */
+
         words = new ArrayList<Word>();
         homeWordGrid = (GridView) findViewById(R.id.home_words_grid);
         wordAdapter = new WordAdapter(this, R.layout.word_cell, words);
@@ -174,14 +176,25 @@ public class HomeActivity extends AppCompatActivity
                 Log.v("test ContextMenu", "menuInfo= " + menuInfo);
             }
         });
-//        homeWordGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.v("test onItemLongClick", "position= " + position + " id=" + id);
-//                return true;
-//            }
-//        });
-//        registerForContextMenu(homeWordGrid);
+
+        homeWordGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("test onItemLongClick", "position= " + position + " id=" + id);
+                return true;
+            }
+        });
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, NewWordActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        registerForContextMenu(homeWordGrid);
 
     }
 
@@ -283,10 +296,11 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
+        loadWords();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
+        /*client.connect();
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
                 "HomeActivity Page", // TODO: Define a title for the content shown.
@@ -297,9 +311,10 @@ public class HomeActivity extends AppCompatActivity
                 // TODO: Make sure this auto-generated app deep link URI is correct.
                 Uri.parse("android-app://com.example.wit.minidictionary/http/host/path")
         );
-        AppIndex.AppIndexApi.start(client, viewAction);
-        loadWords();
+
+        AppIndex.AppIndexApi.start(client, viewAction);*/
     }
+
 
     @Override
     public void onStop() {
