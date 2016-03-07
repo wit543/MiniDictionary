@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -16,10 +17,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
 import com.example.wit.minidictionary.R;
+import com.example.wit.minidictionary.models.Storage;
 import com.example.wit.minidictionary.views.WordAdapter;
 import com.example.wit.minidictionary.word.Word;
 import com.google.android.gms.appindexing.Action;
@@ -34,13 +38,15 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.StreamCorruptedException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class Home extends AppCompatActivity
+public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private List<Word> words;
     private WordAdapter wordAdapter;
     private GridView homeWordGrid;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -58,7 +64,7 @@ public class Home extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Home.this, NewWordActivity.class);
+                Intent intent = new Intent(HomeActivity.this, NewWordActivity.class);
                 startActivity(intent);
             }
         });
@@ -79,34 +85,83 @@ public class Home extends AppCompatActivity
 
     private void initializeComponent() {
         // save;
-        try {
-            FileOutputStream fos = openFileOutput("text",MODE_PRIVATE);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(this);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            FileOutputStream fos = openFileOutput("text",MODE_PRIVATE);
+//            ObjectOutputStream oos = new ObjectOutputStream(fos);
+//            oos.writeObject(this);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         //load
-        try {
-            FileOutputStream fos = openFileOutput("text",MODE_PRIVATE);
-            ObjectInputStream fis = new ObjectInputStream(fos);
-            words = (List<Word>) fis.readObject();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (StreamCorruptedException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            FileOutputStream fos = openFileOutput("text",MODE_PRIVATE);
+//            ObjectOutputStream oos = new ObjectOutputStream(fos);
+//            FileInputStream fis = openFileInput("text");
+//            ObjectInputStream ois = new ObjectInputStream(fis);
+//            words = (List<Word>) ois.readObject();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (StreamCorruptedException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
         words = new ArrayList<Word>();
-        words.add(new Word("hello"));
         homeWordGrid = (GridView) findViewById(R.id.home_words_grid);
-        WordAdapter wordAdapter = new WordAdapter(this, R.layout.word_cell, words);
+        wordAdapter = new WordAdapter(this, R.layout.word_cell, words);
         homeWordGrid.setAdapter(wordAdapter);
+        homeWordGrid.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
+        homeWordGrid.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+            @Override
+            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
+                if(checked){
+                    wordAdapter.setNewSelection(position,true);
+                }
+                else{
+                    wordAdapter.removeSelected(position);
+                }
+
+            }
+
+            @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.contextual_home_menu, menu);
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+                return false;
+            }
+
+            @Override
+            public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.item_delete:
+                        deleteSelectedWord();
+                        loadWords();
+                        wordAdapter.clearSelection();
+                        mode.finish();
+                        return true;
+                    case R.id.select_all:
+                        for(int i =0;i<words.size();i++){
+                            wordAdapter.setNewSelection(i,true);
+                        }
+            }
+
+                return false;
+            }
+
+            @Override
+            public void onDestroyActionMode(ActionMode mode) {
+                wordAdapter.clearSelection();
+            }
+        });
         homeWordGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -126,31 +181,45 @@ public class Home extends AppCompatActivity
 //                return true;
 //            }
 //        });
-        registerForContextMenu(homeWordGrid);
+//        registerForContextMenu(homeWordGrid);
 
     }
 
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.word_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        switch (item.getItemId()) {
-            case R.id.edit:
-                Log.v("test","edit");
-                return true;
-            case R.id.delete:
-                Log.v("test","delete");
-                return true;
-            case R.id.share:
-                Log.v("test","share");
+    private void deleteSelectedWord(){
+        for(Integer i:wordAdapter.getCurrentCheckedPosition()){
+            Storage.getInstance().removeWord(words.get(i));
         }
-        return super.onContextItemSelected(item);
+    }
+//    @Override
+//    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//        super.onCreateContextMenu(menu, v, menuInfo);
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.word_menu, menu);
+//    }
+//
+//    @Override
+//    public boolean onContextItemSelected(MenuItem item) {
+//        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+//        switch (item.getItemId()) {
+//            case R.id.edit:
+//                Log.v("test", "edit");
+//                return true;
+//            case R.id.delete:
+//                Log.v("test", "delete");
+//                Storage.getInstance().removeWord(words.get(info.position));
+//                loadWords();
+//                return true;
+//            case R.id.share:
+//                Log.v("test","share");
+//        }
+//        return super.onContextItemSelected(item);
+//    }
+    private void loadWords(){
+        words.clear();
+        for(Word w: Storage.getInstance().loadWord())
+            words.add(w);
+        wordAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -173,7 +242,7 @@ public class Home extends AppCompatActivity
         @Override
         public boolean onOptionsItemSelected (MenuItem item){
             // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
+            // automatically handle clicks on the HomeActivity/Up button, so long
             // as you specify a parent activity in AndroidManifest.xml.
             int id = item.getItemId();
 
@@ -220,7 +289,7 @@ public class Home extends AppCompatActivity
         client.connect();
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "Home Page", // TODO: Define a title for the content shown.
+                "HomeActivity Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
@@ -229,6 +298,7 @@ public class Home extends AppCompatActivity
                 Uri.parse("android-app://com.example.wit.minidictionary/http/host/path")
         );
         AppIndex.AppIndexApi.start(client, viewAction);
+        loadWords();
     }
 
     @Override
@@ -239,7 +309,7 @@ public class Home extends AppCompatActivity
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "Home Page", // TODO: Define a title for the content shown.
+                "HomeActivity Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
@@ -250,4 +320,5 @@ public class Home extends AppCompatActivity
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
+
 }

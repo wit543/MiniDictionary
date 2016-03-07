@@ -17,6 +17,9 @@ public class Storage {
     private static Storage storage;
     private Storage(){
         words = new ArrayList<Word>();
+        for(int i=0;i<100;i++){
+            words.add(new Word(String.valueOf(i)));
+        }
     }
     public static Storage getInstance(){
         if(storage==null)
@@ -34,7 +37,13 @@ public class Storage {
             if(w.getWord().equals(word))
                 words.remove(w);
     }
+    public void clearWord(){
+        words.clear();
+    }
     public List<Word> loadWord(){
         return words;
+    }
+    public void removeWord(Word word){
+        words.remove(word);
     }
 }

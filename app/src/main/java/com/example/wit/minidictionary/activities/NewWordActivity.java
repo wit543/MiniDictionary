@@ -1,5 +1,6 @@
 package com.example.wit.minidictionary.activities;
 
+import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -39,14 +40,12 @@ public class NewWordActivity extends AppCompatActivity {
         addWordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveWord(""+wordField.getText() ,""+pronunciationField.getText() , null);
+                saveWord("" + wordField.getText(), "" + pronunciationField.getText(), null);
                 finish();
             }
         });
-        Spinner spinner = (Spinner)findViewById(R.id.new_word_part_of_speech_spinner);
-        ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this,R.array.type_of_part_of_speech,android.R.layout.simple_spinner_item);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(arrayAdapter);
+        FragmentManager fm= getFragmentManager();
+        fm.beginTransaction();
 
       
     }
