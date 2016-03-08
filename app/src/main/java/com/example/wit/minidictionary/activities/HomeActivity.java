@@ -1,6 +1,7 @@
 package com.example.wit.minidictionary.activities;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -23,6 +24,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -292,9 +295,15 @@ public class HomeActivity extends AppCompatActivity
             if(id == R.id.action_search){
                 if(isSearchOpened){
                     closeSearchBar();
+                    Log.v("test", "close");
+                    ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(searchET.getWindowToken(),0);
                 }
                 else{
                     openSearchBar(searchQuery);
+                    Log.v("test", "open");
+                    ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .showSoftInput(searchET, InputMethodManager.SHOW_FORCED);
                 }
             }
 
@@ -307,7 +316,6 @@ public class HomeActivity extends AppCompatActivity
             actionBar.setDisplayShowCustomEnabled(true);
             actionBar.setCustomView(R.layout.search_word_bar);
             actionBar.setDisplayShowTitleEnabled(false);
-            actionBar.setDisplayShowHomeEnabled(false);
             // search edit text field setup.
             searchET = (EditText) actionBar.getCustomView().findViewById(R.id.search_word);
             searchET.addTextChangedListener(new TextWatcher() {
