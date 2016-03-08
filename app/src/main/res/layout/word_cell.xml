@@ -11,8 +11,7 @@
     android:id="@+id/word"
     android:textStyle="bold"
     android:textSize="30dp"
-    android:textColor="#FFFFFF"
-    android:background="#000000"
+    android:textColor="#ffffff"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"/>
 </LinearLayout>
