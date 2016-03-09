@@ -297,7 +297,7 @@ public class HomeActivity extends AppCompatActivity
                     closeSearchBar();
                     Log.v("test", "close");
                     ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
-                            .hideSoftInputFromWindow(searchET.getWindowToken(),0);
+                            .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
                 }
                 else{
                     openSearchBar(searchQuery);
