@@ -6,13 +6,15 @@
     <TextView
         android:id="@+id/pos"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="POS"/>
 
     <TextView
         android:id="@+id/meaning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/pos"/>
+        android:layout_below="@id/pos"
+        android:text="MEANING"/>
 
     <Button
         android:id="@+id/deleteTranslation"
