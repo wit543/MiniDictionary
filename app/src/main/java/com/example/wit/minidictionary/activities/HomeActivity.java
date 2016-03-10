@@ -167,7 +167,9 @@ public class HomeActivity extends AppCompatActivity
         homeWordGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                Intent intent = new Intent(HomeActivity.this,WordActivity.class);
+                intent.putExtra("word", words.get(position) );
+                startActivity(intent);
             }
         });
         homeWordGrid.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {

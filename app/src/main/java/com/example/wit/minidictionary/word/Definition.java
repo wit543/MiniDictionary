@@ -1,9 +1,11 @@
 package com.example.wit.minidictionary.word;
 
+import java.io.Serializable;
+
 /**
  * Created by WIT on 01-Mar-16.
  */
-public class Definition {
+public class Definition implements Serializable {
     //private PartOfSpeech partOfSpeech;
     private PartOfSpeech partOfSpeech;
     private String definition;

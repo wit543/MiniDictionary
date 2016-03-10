@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.wit.minidictionary.R;
 import com.example.wit.minidictionary.views.TranslationAdapter;
@@ -69,29 +70,38 @@ public class NewWordActivity extends AppCompatActivity {
         FragmentManager fm= getFragmentManager();
         fm.beginTransaction();
 
-
         addTranslationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(addTranslationState == 0){
+                if (addTranslationState == 0) {
                     spinner.setVisibility(View.VISIBLE);
                     meaningField.setVisibility(View.VISIBLE);
                     posSub.setVisibility(View.VISIBLE);
                     meaningSub.setVisibility(View.VISIBLE);
                     //addTranslationButton.setVisibility(View.INVISIBLE);
+                    translationListView.setVisibility(View.GONE);
                     addTranslationButton.setText("Add");
                     addTranslationState = 1;
-                }
-                else{
-                    spinner.setVisibility(View.GONE);
-                    meaningField.setVisibility(View.GONE);
-                    posSub.setVisibility(View.GONE);
-                    meaningSub.setVisibility(View.GONE);
-                    addTranslationButton.setText("Add  Translation");
-                    addTranslationState = 0;
+                } else {
 
-                    addNewDefinition(spinner.getSelectedItem().toString(), ""+meaningField.getText());
+                    String pos = spinner.getSelectedItem().toString();
+                    String meaning = ""+meaningField.getText();
+
+                    if(meaning.matches("")){
+                        Toast.makeText(NewWordActivity.this , pos , Toast.LENGTH_LONG);
+                    }else{
+                        spinner.setVisibility(View.GONE);
+                        meaningField.setVisibility(View.GONE);
+                        posSub.setVisibility(View.GONE);
+                        meaningSub.setVisibility(View.GONE);
+                        translationListView.setVisibility(View.VISIBLE);
+                        addTranslationButton.setText("Add  Translation");
+                        addNewDefinition(pos,meaning);
+                        meaningField.setText("");
+                        addTranslationState = 0;
                     }
+
+                }
             }
         });
 
@@ -119,6 +129,8 @@ public class NewWordActivity extends AppCompatActivity {
 
     private void saveWord(String word,String pronunciation,ArrayList<Definition> translations){
         Word newWord = new Word(word);
+        for (Definition d : definitions)
+            newWord.addDefinition(d);
         Storage.getInstance().addWord(newWord);
     }
 }
