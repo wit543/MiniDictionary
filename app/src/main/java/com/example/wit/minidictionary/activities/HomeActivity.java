@@ -1,9 +1,16 @@
 package com.example.wit.minidictionary.activities;
 
+import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
@@ -17,9 +24,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 
 import com.example.wit.minidictionary.R;
@@ -30,23 +39,23 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.StreamCorruptedException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private List<Word> words;
+
     private WordAdapter wordAdapter;
     private GridView homeWordGrid;
+    private Drawable iconOpenSearch;
+    private Drawable iconCloseSearch;
+    private EditText searchET;
+    private MenuItem searchAction;
 
+    private List<Word> words;
+    private List<Word> wordsFiltered;
+    private boolean isSearchOpened;
+    private String searchQuery;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -78,6 +87,7 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         initializeComponent();
+        initSearch();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -120,10 +130,9 @@ public class HomeActivity extends AppCompatActivity
         homeWordGrid.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                if(checked){
-                    wordAdapter.setNewSelection(position,true);
-                }
-                else{
+                if (checked) {
+                    wordAdapter.setNewSelection(position, true);
+                } else {
                     wordAdapter.removeSelected(position);
                 }
 
@@ -143,7 +152,7 @@ public class HomeActivity extends AppCompatActivity
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.item_delete:
                         deleteSelectedWord();
                         loadWords();
@@ -151,10 +160,10 @@ public class HomeActivity extends AppCompatActivity
                         mode.finish();
                         return true;
                     case R.id.select_all:
-                        for(int i =0;i<words.size();i++){
-                            wordAdapter.setNewSelection(i,true);
+                        for (int i = 0; i < words.size(); i++) {
+                            wordAdapter.setNewSelection(i, true);
                         }
-            }
+                }
 
                 return false;
             }
@@ -199,7 +208,18 @@ public class HomeActivity extends AppCompatActivity
         registerForContextMenu(homeWordGrid);
 
     }
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void initSearch(){
+        wordsFiltered = words;
 
+        // get icon
+
+        iconOpenSearch = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_search);
+        iconCloseSearch = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_close);
+
+        //init listView
+
+    }
     private void deleteSelectedWord(){
         for(Integer i:wordAdapter.getCurrentCheckedPosition()){
             Storage.getInstance().removeWord(words.get(i));
@@ -240,6 +260,9 @@ public class HomeActivity extends AppCompatActivity
     @Override
         public void onBackPressed () {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if(isSearchOpened){
+                closeSearchBar();
+            }
             if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
             } else {
@@ -254,7 +277,13 @@ public class HomeActivity extends AppCompatActivity
             return true;
         }
 
-        @Override
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        searchAction = menu.findItem(R.id.action_search);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
         public boolean onOptionsItemSelected (MenuItem item){
             // Handle action bar item clicks here. The action bar will
             // automatically handle clicks on the HomeActivity/Up button, so long
@@ -265,10 +294,84 @@ public class HomeActivity extends AppCompatActivity
             if (id == R.id.action_settings) {
                 return true;
             }
+            if(id == R.id.action_search){
+                if(isSearchOpened){
+                    closeSearchBar();
+                    Log.v("test", "close");
+                    ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),0);
+                }
+                else{
+                    openSearchBar(searchQuery);
+                    Log.v("test", "open");
+                    ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
+                            .showSoftInput(searchET, InputMethodManager.SHOW_FORCED);
+                }
+            }
 
             return super.onOptionsItemSelected(item);
         }
+        private void openSearchBar(String text){
+            //set custom view on action bar
+            android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+            assert actionBar != null;
+            actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setCustomView(R.layout.search_word_bar);
+            actionBar.setDisplayShowTitleEnabled(false);
+            // search edit text field setup.
+            searchET = (EditText) actionBar.getCustomView().findViewById(R.id.search_word);
+            searchET.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    searchQuery = searchET.getText().toString();
+                    wordsFiltered = performSearch(words, searchQuery);
+                    loadSelectedWord();
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
+            searchET.setText(text);
+            searchET.requestFocus();
+
+            // change search icon
+            searchAction.setIcon(iconCloseSearch);
+            isSearchOpened = true;
+        }
+        private void loadSelectedWord(){
+            words.clear();
+            for(Word w: wordsFiltered)
+                words.add(w);
+            wordAdapter.notifyDataSetChanged();
+        }
+        private List<Word> performSearch(List<Word> words, String text){
+
+            String query = text.toLowerCase();
+            // output list
+            List<Word> wordsFiltered = new ArrayList<Word>();
+            for(Word w :Storage.getInstance().loadWord()){
+                if(w.getWord().contains(query)){
+                    wordsFiltered.add(w);
+                }
+            }
+            return wordsFiltered;
+        }
+        private void closeSearchBar(){
+            //remove custom view.
+            getSupportActionBar().setDisplayShowCustomEnabled(false);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            searchAction.setIcon(iconOpenSearch);
+            isSearchOpened =false;
+            searchET.setText("");
+            loadWords();
+        }
         @SuppressWarnings("StatementWithEmptyBody")
         @Override
         public boolean onNavigationItemSelected (MenuItem item){
