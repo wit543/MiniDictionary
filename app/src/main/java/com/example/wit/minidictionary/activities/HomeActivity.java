@@ -122,7 +122,6 @@ public class HomeActivity extends AppCompatActivity
 
         */
 
-        words = new ArrayList<Word>();
         homeWordGrid = (GridView) findViewById(R.id.home_words_grid);
         wordAdapter = new WordAdapter(this, R.layout.word_cell, words);
         homeWordGrid.setAdapter(wordAdapter);
@@ -254,7 +253,6 @@ public class HomeActivity extends AppCompatActivity
         for(Word w: Storage.getInstance().loadWord())
             words.add(w);
         wordAdapter.notifyDataSetChanged();
-
     }
 
     @Override

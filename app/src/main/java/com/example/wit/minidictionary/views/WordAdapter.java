@@ -36,6 +36,7 @@ public class WordAdapter extends ArrayAdapter<Word> {
     public Set<Integer> getCurrentCheckedPosition(){
         return selection.keySet();
     }
+
     public void removeSelected(int position){
         selection.remove(position);
         notifyDataSetChanged();

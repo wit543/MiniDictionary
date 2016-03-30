@@ -29,7 +29,8 @@
         android:layout_height="wrap_content"
         android:hint="Type Word Here"
         android:layout_below="@+id/wordSubject"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp"
+        />
 
 
     <TextView
@@ -73,46 +74,45 @@
     </ListView>
 
     //TABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
-    <TextView
-        android:id="@+id/partOfSpeechSubject"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:textStyle="bold"
-        android:text="Part of speech"
-        android:textSize="15dp"
-        android:layout_below="@id/transaltions_list_view"
-        android:layout_marginLeft="10dp"
-        android:textColor="#000000" />
+    <!--<TextView-->
+        <!--android:id="@+id/partOfSpeechSubject"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:text="Part of speech"-->
+        <!--android:textSize="15dp"-->
+        <!--android:layout_below="@id/transaltions_list_view"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:textColor="#000000" />-->
 
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/new_word_part_of_speech_spinner"
-        android:layout_below="@id/partOfSpeechSubject"
-        android:layout_marginLeft="10dp"
-        ></Spinner>
+    <!--<Spinner-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/new_word_part_of_speech_spinner"-->
+        <!--android:layout_below="@id/partOfSpeechSubject"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--></Spinner>-->
 
-    <TextView
-        android:id="@+id/meaningSubjecr"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="Meaning"
-        android:textSize="15dp"
-        android:layout_below="@id/new_word_part_of_speech_spinner"
-        android:layout_marginLeft="10dp"
-        android:textColor="#000000" />
+    <!--<TextView-->
+        <!--android:id="@+id/meaningSubjecr"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textStyle="bold"-->
+        <!--android:text="Meaning"-->
+        <!--android:textSize="15dp"-->
+        <!--android:layout_below="@id/new_word_part_of_speech_spinner"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:textColor="#000000" />-->
 
-    <EditText
-        android:id="@+id/meaningField"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Type Meaning Here"
-        android:layout_marginLeft="10dp"
-        android:textSize="15dp"
-        android:layout_below="@+id/meaningSubjecr" />
-
+    <!--<EditText-->
+        <!--android:id="@+id/meaningField"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Type Meaning Here"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:textSize="15dp"-->
+        <!--android:layout_below="@+id/meaningSubjecr" />-->
 
     //TABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
 
@@ -121,7 +121,7 @@
         android:text="Add Translation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/meaningField"/>
+        android:layout_below="@+id/transaltions_list_view"/>
 
     <Button
         android:id="@+id/addWordButton"
