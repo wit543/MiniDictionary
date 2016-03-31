@@ -1,6 +1,7 @@
 package com.example.wit.minidictionary.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.wit.minidictionary.R;
+import com.example.wit.minidictionary.activities.NewDefinitionActivity;
 import com.example.wit.minidictionary.word.Definition;
 import com.example.wit.minidictionary.word.Word;
 
@@ -37,11 +39,18 @@ public class TranslationAdapter extends ArrayAdapter<Definition> {
         TextView posView = (TextView) v.findViewById(R.id.pos);
         TextView meaningView = (TextView) v.findViewById(R.id.meaning);
         Button deleteButton = (Button) v.findViewById(R.id.deleteTranslation);
+        Button editButton  = (Button) v.findViewById(R.id.editTranslation);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 objects.remove(position);
                 notifyDataSetChanged();
+            }
+        });
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(getContext(), NewDefinitionActivity.class);
             }
         });
 

@@ -16,11 +16,21 @@
         android:layout_below="@id/pos"
         android:text="MEANING"/>
 
+
     <Button
         android:id="@+id/deleteTranslation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="delete"
         android:layout_alignParentRight="true"/>
+
+    <Button
+        android:id="@+id/editTranslation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="edit"
+        android:layout_toLeftOf="@id/deleteTranslation"/>
+
+
 
 </RelativeLayout>

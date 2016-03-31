@@ -61,4 +61,13 @@ public class Storage {
         }
     }
 
+    public Word getRealWord(Word copyWord){
+        for(Word w : words){
+            if(w.getWord().equals(copyWord.getWord())){
+               return w;
+            }
+        }
+        return null;
+    }
+
 }

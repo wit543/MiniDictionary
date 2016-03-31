@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.wit.minidictionary.R;
+import com.example.wit.minidictionary.models.Storage;
 import com.example.wit.minidictionary.views.DeletableWordAdapter;
 import com.example.wit.minidictionary.views.TranslationAdapter;
 import com.example.wit.minidictionary.views.WordAdapter;
@@ -98,7 +99,7 @@ public class NewDefinitionActivity extends AppCompatActivity {
         if (requestCode == REQUEST_ADD_NEW_SYNONYM&& resultCode == Activity.RESULT_OK) {
             Word word = (Word)data.getSerializableExtra("word");
             if(word!=null){
-                synonyms.add(word);
+                synonyms.add(Storage.getInstance().getRealWord(word));
                 wordAdapter.notifyDataSetChanged();
             }
         }
