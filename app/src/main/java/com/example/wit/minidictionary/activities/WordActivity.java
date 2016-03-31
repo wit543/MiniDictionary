@@ -3,8 +3,10 @@ package com.example.wit.minidictionary.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,6 +35,8 @@ public class WordActivity extends AppCompatActivity {
     private TextView partOfSpeech;
     private TextView pronunWord;
 
+    private Button editButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +51,18 @@ public class WordActivity extends AppCompatActivity {
         //symnonym = new ArrayList<Word>();
         definitionSymnoAdapter = new DefinitionSymnoAdapter(this,R.layout.def_sym_cell,definitions);
         definitionListView = (ListView)findViewById(R.id.definition_List_view);
+        editButton = (Button)findViewById(R.id.editButton);
         definitionListView.setAdapter(definitionSymnoAdapter);
 
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WordActivity.this,NewWordActivity.class);
+                intent.putExtra("word" , word);
+                startActivity(intent);
+            }
+        });
 
         subject = (TextView)findViewById(R.id.subject);
         //symnoListView = (ListView)findViewById(R.id.symno_List_view);
@@ -58,6 +72,7 @@ public class WordActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         subject.setText(word.getWord());
+        Log.v("FUCK" , word.getWord());
         //pronunWord.setText(word.getPronunciation());
         //definitions.clear();
 

@@ -13,13 +13,48 @@ public class Word implements Serializable{
     private List<Definition> definitions;
     private List<Word> synonyms;
     private List<Word> antonyms;
-    public Word(String word) {
+    public Word(String word , String pronunciation) {
         this.word = word;
+        this.pronunciation = pronunciation;
         definitions = new ArrayList<Definition>();
+    }
+
+    public Word(String word , String pronunciation , List<Definition> definitions) {
+        this.word = word;
+        this.pronunciation = pronunciation;
+        this.definitions = definitions;
     }
 
     public void addDefinition(String partOfSpeech, String definition){
         definitions.add(new Definition(partOfSpeech,definition));
+    }
+
+    public String getPronunciation() {
+        return pronunciation;
+    }
+
+    public List<Definition> getDefinitions() {
+        return definitions;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
+    }
+
+    public void setPronunciation(String pronunciation) {
+        this.pronunciation = pronunciation;
+    }
+
+    public void setDefinitions(List<Definition> definitions) {
+        this.definitions = definitions;
+    }
+
+    public void setSynonyms(List<Word> synonyms) {
+        this.synonyms = synonyms;
+    }
+
+    public void setAntonyms(List<Word> antonyms) {
+        this.antonyms = antonyms;
     }
 
     public void addDefinition(Definition definition){
