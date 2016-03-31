@@ -16,11 +16,15 @@
         android:layout_height="wrap_content"
         android:textSize="20dp"
         />
+
+
+
     <ListView
-        android:id="@+id/definition_list_view"
+        android:id="@+id/definition_List_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/subject"
+        android:layout_below="@id/subject"
+
         >
     </ListView>
 

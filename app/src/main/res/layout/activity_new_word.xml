@@ -127,8 +127,15 @@
         android:id="@+id/addWordButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/cancelButton"
         android:text="Add Word"/>
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Cancel"/>
 
 
 </RelativeLayout>

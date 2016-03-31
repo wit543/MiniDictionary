@@ -27,7 +27,7 @@ public class NewDefinitionActivity extends AppCompatActivity {
     private TextView meaningField;
     private GridView synonymGridView;
     private Button addDefinitionButton;
-    private Button addSynonymButton;
+    private Button addSynonymButton,cancelButton;
 
     private List<Word> synonyms;
     private WordAdapter wordAdapter;
@@ -52,6 +52,7 @@ public class NewDefinitionActivity extends AppCompatActivity {
         synonymGridView = (GridView)findViewById(R.id.synonum_grid_view);
         addSynonymButton = (Button)findViewById(R.id.addSynonymButton);
         addDefinitionButton = (Button)findViewById(R.id.addDefinitionButton);
+        cancelButton = (Button)findViewById(R.id.cancelButton);
 
         wordAdapter = new WordAdapter(this,R.layout.word_cell , synonyms);
 
@@ -64,8 +65,8 @@ public class NewDefinitionActivity extends AppCompatActivity {
         addSynonymButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NewDefinitionActivity.this,SearchWordActivity.class);
-                startActivityForResult(intent , REQUEST_ADD_NEW_SYNONYM);
+                Intent intent = new Intent(NewDefinitionActivity.this, SearchWordActivity.class);
+                startActivityForResult(intent, REQUEST_ADD_NEW_SYNONYM);
             }
         });
 
@@ -78,6 +79,14 @@ public class NewDefinitionActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("definition", definition);
                 setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_CANCELED);
                 finish();
             }
         });

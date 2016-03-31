@@ -25,7 +25,7 @@ import java.util.List;
 
 public class NewWordActivity extends AppCompatActivity {
 
-    private Button addWordButton;
+    private Button addWordButton,cancelButton;
     private Button addTranslationButton;
     private TextView wordField;
     private TextView pronunciationField;
@@ -52,6 +52,7 @@ public class NewWordActivity extends AppCompatActivity {
         wordField = (TextView)findViewById(R.id.wordField);
         pronunciationField = (TextView)findViewById(R.id.pronunciationField);
         addWordButton = (Button)findViewById(R.id.addWordButton);
+        cancelButton = (Button)findViewById(R.id.cancelButton);
 //        meaningField = (TextView)findViewById(R.id.meaningField);
 //        posSub = (TextView)findViewById(R.id.partOfSpeechSubject);
 //        meaningSub = (TextView)findViewById(R.id.meaningSubjecr);
@@ -72,6 +73,13 @@ public class NewWordActivity extends AppCompatActivity {
             }
         });
 
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         addTranslationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,6 +87,8 @@ public class NewWordActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_ADD_NEW_DEFINITION);
             }
         });
+
+
 
 //        addTranslationButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
