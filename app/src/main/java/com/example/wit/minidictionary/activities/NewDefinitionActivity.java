@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.wit.minidictionary.R;
+import com.example.wit.minidictionary.views.DeletableWordAdapter;
 import com.example.wit.minidictionary.views.TranslationAdapter;
 import com.example.wit.minidictionary.views.WordAdapter;
 import com.example.wit.minidictionary.word.Definition;
@@ -30,7 +31,7 @@ public class NewDefinitionActivity extends AppCompatActivity {
     private Button addSynonymButton,cancelButton;
 
     private List<Word> synonyms;
-    private WordAdapter wordAdapter;
+    private DeletableWordAdapter wordAdapter;
 
 
     private static final int REQUEST_ADD_NEW_SYNONYM = 0;
@@ -54,7 +55,7 @@ public class NewDefinitionActivity extends AppCompatActivity {
         addDefinitionButton = (Button)findViewById(R.id.addDefinitionButton);
         cancelButton = (Button)findViewById(R.id.cancelButton);
 
-        wordAdapter = new WordAdapter(this,R.layout.word_cell , synonyms);
+        wordAdapter = new DeletableWordAdapter(this,R.layout.word_cell , synonyms);
 
         ArrayAdapter<CharSequence> arrayAdapter = ArrayAdapter.createFromResource(this,R.array.type_of_part_of_speech,android.R.layout.simple_spinner_item);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

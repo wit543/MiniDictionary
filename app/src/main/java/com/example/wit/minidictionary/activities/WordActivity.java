@@ -1,5 +1,6 @@
 package com.example.wit.minidictionary.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class WordActivity extends AppCompatActivity {
     private TextView pronunWord;
 
     private Button editButton;
+    private static final int REQUEST_EDIT_WORD = 0;
 
 
     @Override
@@ -58,9 +60,11 @@ public class WordActivity extends AppCompatActivity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WordActivity.this,NewWordActivity.class);
-                intent.putExtra("word" , word);
+                Intent intent = new Intent(WordActivity.this, NewWordActivity.class);
+                intent.putExtra("word", word);
                 startActivity(intent);
+                finish();
+                //startActivityForResult(intent,REQUEST_EDIT_WORD);
             }
         });
 
@@ -72,12 +76,13 @@ public class WordActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         subject.setText(word.getWord());
-        Log.v("FUCK" , word.getWord());
-        //pronunWord.setText(word.getPronunciation());
-        //definitions.clear();
-
         definitions = word.getDefinition();
-
         definitionSymnoAdapter.notifyDataSetChanged();
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_EDIT_WORD&& resultCode == Activity.RESULT_OK) {
+            word = (Word)data.getSerializableExtra("word");
+        }
     }
 }
