@@ -2,6 +2,7 @@ package com.example.wit.minidictionary.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -53,9 +54,11 @@ public class WordAdapter extends ArrayAdapter<Word> {
             LayoutInflater vl = LayoutInflater.from(getContext());
             v = vl.inflate(R.layout.word_cell, null);
         }
-        v.setBackgroundColor(getContext().getColor(android.R.color.holo_blue_bright));
+        //v.setBackgroundColor(getContext().getColor(android.R.color.holo_blue_bright));
+        v.setBackgroundColor(Color.BLUE);
         if(selection.get(position)!=null)
-            v.setBackgroundColor(getContext().getColor(android.R.color.holo_blue_dark));
+            v.setBackgroundColor(Color.CYAN);
+            //v.setBackgroundColor(getContext().getColor(android.R.color.holo_blue_dark));
 
         TextView wordView = (TextView) v.findViewById(R.id.word);
         Word word = getItem(position);

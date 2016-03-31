@@ -12,19 +12,30 @@
 
     <TextView
         android:id="@+id/subject"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
+        android:text="WORD"
+        android:textStyle="bold"
+        android:textSize="42dp"
+        android:layout_marginRight="20dp"
         />
 
+    <Button
+        android:id="@+id/speakButton"
+        android:text="speak"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/subject"
+        android:layout_toRightOf="@+id/subject"
+        android:layout_toEndOf="@+id/subject" />
 
 
     <ListView
         android:id="@+id/definition_List_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/subject"
 
+        android:layout_below="@+id/subject"
         >
     </ListView>
 

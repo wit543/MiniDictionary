@@ -2,6 +2,7 @@ package com.example.wit.minidictionary.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.speech.tts.TextToSpeech;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.example.wit.minidictionary.word.Word;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class WordActivity extends AppCompatActivity {
 
@@ -30,13 +32,13 @@ public class WordActivity extends AppCompatActivity {
     private List<Definition> definitions;
     private DefinitionSymnoAdapter definitionSymnoAdapter;
     private List<Word> symnonym;
-
+    private TextToSpeech tts;
     private TextView subject;
     private TextView translation;
     private TextView partOfSpeech;
     private TextView pronunWord;
 
-    private Button editButton;
+    private Button editButton,speakButton;
     private static final int REQUEST_EDIT_WORD = 0;
 
 
@@ -49,12 +51,20 @@ public class WordActivity extends AppCompatActivity {
     }
 
     private void initComponents(){
+
+        tts = new TextToSpeech(WordActivity.this, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                tts.setLanguage(Locale.US);
+            }
+        });
+
         definitions = word.getDefinition();
-        //symnonym = new ArrayList<Word>();
         definitionSymnoAdapter = new DefinitionSymnoAdapter(this,R.layout.def_sym_cell,definitions);
         definitionListView = (ListView)findViewById(R.id.definition_List_view);
         editButton = (Button)findViewById(R.id.editButton);
         definitionListView.setAdapter(definitionSymnoAdapter);
+        speakButton = (Button)findViewById(R.id.speakButton);
 
 
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +75,13 @@ public class WordActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 //startActivityForResult(intent,REQUEST_EDIT_WORD);
+            }
+        });
+
+        speakButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tts.speak(word.getWord(), TextToSpeech.QUEUE_ADD, null);
             }
         });
 

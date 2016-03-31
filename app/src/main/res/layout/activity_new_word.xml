@@ -11,6 +11,20 @@
 
 
 
+    <!--<ImageView-->
+        <!--android:id="@+id/imgView"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"></ImageView>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/buttonLoadPicture"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0"-->
+        <!--android:text="Load Picture"-->
+        <!--android:layout_below="@id/imgView"-->
+        <!--android:layout_gravity="center"></Button>-->
 
     <TextView
         android:id="@+id/wordSubject"
@@ -20,6 +34,7 @@
         android:text="Word"
         android:editable="false"
         android:textSize="20dp"
+
         android:textColor="#000000" />
 
 

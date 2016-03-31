@@ -48,13 +48,13 @@ public class NewDefinitionActivity extends AppCompatActivity {
     private void initComponent(){
 
         synonyms = new ArrayList<Word>();
-
         spinner = (Spinner)findViewById(R.id.new_word_part_of_speech_spinner);
         meaningField = (TextView)findViewById(R.id.meaningField);
         synonymGridView = (GridView)findViewById(R.id.synonum_grid_view);
         addSynonymButton = (Button)findViewById(R.id.addSynonymButton);
         addDefinitionButton = (Button)findViewById(R.id.addDefinitionButton);
         cancelButton = (Button)findViewById(R.id.cancelButton);
+
 
         wordAdapter = new DeletableWordAdapter(this,R.layout.word_cell , synonyms);
 

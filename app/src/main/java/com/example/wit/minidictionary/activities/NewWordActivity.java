@@ -3,12 +3,18 @@ package com.example.wit.minidictionary.activities;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -26,8 +32,9 @@ import java.util.List;
 
 public class NewWordActivity extends AppCompatActivity {
 
+    private ImageView imageView;
     private Button addWordButton,cancelButton , editButton;
-    private Button addTranslationButton;
+    private Button loadImgButton,addTranslationButton;
     private TextView wordField;
     private TextView pronunciationField;
     private ListView translationListView;
@@ -43,6 +50,7 @@ public class NewWordActivity extends AppCompatActivity {
     private int mode;
 
     private static final int REQUEST_ADD_NEW_DEFINITION = 0;
+    private static final int REQUEST_LOAD_IMAGE = 1;
     private static final int NEW_WORD_MODE = 0;
     private static final int EDIT_WORD_MODE = 1;
 
@@ -64,18 +72,27 @@ public class NewWordActivity extends AppCompatActivity {
     }
 
     private void initComponent(){
+        //imageView = (ImageView) findViewById(R.id.imgView);
         wordField = (TextView)findViewById(R.id.wordField);
         pronunciationField = (TextView)findViewById(R.id.pronunciationField);
+        //loadImgButton = (Button)findViewById(R.id.buttonLoadPicture);
         addWordButton = (Button)findViewById(R.id.addWordButton);
         cancelButton = (Button)findViewById(R.id.cancelButton);
         editButton = (Button)findViewById(R.id.editButton);
         addTranslationButton = (Button)findViewById(R.id.addTranslationButton);
         translationListView = (ListView)findViewById(R.id.transaltions_list_view);
 
-
         definitions = new ArrayList<Definition>();
         translationAdapter = new TranslationAdapter(this,R.layout.translation_cell,definitions);
         translationListView.setAdapter(translationAdapter);
+
+//        loadImgButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                startActivityForResult(i, REQUEST_LOAD_IMAGE);
+//            }
+//        });
 
 
         addWordButton.setOnClickListener(new View.OnClickListener() {
@@ -128,11 +145,41 @@ public class NewWordActivity extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(data==null)
+            return;
+
         if (requestCode == REQUEST_ADD_NEW_DEFINITION&& resultCode == Activity.RESULT_OK) {
             Definition definition = (Definition)data.getSerializableExtra("definition");
             if(definition!=null){
                 definitions.add(definition);
             }
+        }
+
+        if (requestCode == REQUEST_LOAD_IMAGE&& resultCode == Activity.RESULT_OK && null != data) {
+//            Uri selectedImage = data.getData();
+//            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+//
+//            Cursor cursor = getContentResolver().query(selectedImage,
+//                    filePathColumn, null, null, null);
+//            cursor.moveToFirst();
+//
+//            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+//            String picturePath = cursor.getString(columnIndex);
+//            cursor.close();
+//            Bitmap img = BitmapFactory.decodeFile(picturePath);
+//            imageView.setImageBitmap(img);
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(selectedImage,
+                    filePathColumn, null, null, null);
+            cursor.moveToFirst();
+
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
         }
     }
 

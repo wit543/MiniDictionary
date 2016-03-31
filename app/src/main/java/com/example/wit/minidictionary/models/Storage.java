@@ -18,9 +18,9 @@ public class Storage {
     private static Storage storage;
     private Storage(){
         words = new ArrayList<Word>();
-        for(int i=0;i<100;i++){
-            words.add(new Word(String.valueOf(i) , "FUCK"));
-        }
+//        for(int i=0;i<100;i++){
+//            words.add(new Word(String.valueOf(i) , "FUCK"));
+//        }
     }
     public static Storage getInstance(){
         if(storage==null)
