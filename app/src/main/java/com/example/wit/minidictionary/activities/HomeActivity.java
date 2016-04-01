@@ -125,6 +125,7 @@ public class HomeActivity extends AppCompatActivity
 
         */
 
+
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -189,6 +190,9 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 tts.speak(words.get(position).getWord(),TextToSpeech.QUEUE_FLUSH,null,"speak");
+                Intent intent = new Intent(HomeActivity.this,WordActivity.class);
+                intent.putExtra("word", words.get(position) );
+                startActivity(intent);
             }
         });
         homeWordGrid.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
@@ -263,7 +267,6 @@ public class HomeActivity extends AppCompatActivity
         for(Word w: Storage.getInstance().loadWord())
             words.add(w);
         wordAdapter.notifyDataSetChanged();
-
     }
 
     @Override

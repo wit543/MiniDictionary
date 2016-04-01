@@ -30,6 +30,14 @@
             android:value="@integer/google_play_services_version" />
 
         <activity android:name=".activities.NewWordActivity" />
+        <activity
+            android:name=".activities.StartActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_start"
+            android:theme="@style/FullscreenTheme" />
+        <activity android:name=".activities.WordActivity" />
+        <activity android:name=".activities.SearchWordActivity" />
+        <activity android:name=".activities.NewDefinitionActivity" />
     </application>
 
 </manifest>

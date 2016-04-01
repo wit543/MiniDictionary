@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#87CEFA">
+
+    <TextView
+        android:id="@+id/sym_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="[Sym.]"
+        />
+
+    <TextView
+        android:id="@+id/sym_word"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/sym_text"
+        android:hint="wordddd"
+        android:layout_marginLeft="10dp"
+        />
+</RelativeLayout>
