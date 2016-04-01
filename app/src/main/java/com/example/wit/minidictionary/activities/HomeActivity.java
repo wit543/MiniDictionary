@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -41,6 +42,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -56,6 +58,7 @@ public class HomeActivity extends AppCompatActivity
     private List<Word> wordsFiltered;
     private boolean isSearchOpened;
     private String searchQuery;
+    private TextToSpeech tts;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -122,6 +125,15 @@ public class HomeActivity extends AppCompatActivity
 
         */
 
+        tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if(status != TextToSpeech.ERROR){
+                    tts.setLanguage(Locale.ENGLISH);
+                }
+            }
+        });
+
         words = new ArrayList<Word>();
         homeWordGrid = (GridView) findViewById(R.id.home_words_grid);
         wordAdapter = new WordAdapter(this, R.layout.word_cell, words);
@@ -176,7 +188,7 @@ public class HomeActivity extends AppCompatActivity
         homeWordGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                tts.speak(words.get(position).getWord(),TextToSpeech.QUEUE_FLUSH,null,"speak");
             }
         });
         homeWordGrid.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
@@ -214,7 +226,6 @@ public class HomeActivity extends AppCompatActivity
 
         iconOpenSearch = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_search);
         iconCloseSearch = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_close);
-
         //init listView
 
     }
