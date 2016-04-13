@@ -1,20 +1,26 @@
 package com.example.wit.minidictionary.activities;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.text.Editable;
+import android.text.Layout;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -30,7 +36,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.wit.minidictionary.R;
 import com.example.wit.minidictionary.models.Storage;
@@ -43,6 +52,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+import java.util.zip.Inflater;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -59,6 +70,7 @@ public class HomeActivity extends AppCompatActivity
     private boolean isSearchOpened;
     private String searchQuery;
     private TextToSpeech tts;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -124,7 +136,10 @@ public class HomeActivity extends AppCompatActivity
         }
 
         */
-
+        LinearLayout homeLayout =(LinearLayout) findViewById(R.id.home_layout);
+        LayoutInflater lif = LayoutInflater.from(getApplicationContext());
+        View tutorial = lif.inflate(R.layout.tutorial_frame, homeLayout,false);
+        homeLayout.addView(tutorial);
 
         tts = new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
@@ -187,6 +202,7 @@ public class HomeActivity extends AppCompatActivity
             }
         });
         homeWordGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 tts.speak(words.get(position).getWord(),TextToSpeech.QUEUE_FLUSH,null,"speak");
@@ -318,6 +334,17 @@ public class HomeActivity extends AppCompatActivity
                     Log.v("test", "open");
                     ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE))
                             .showSoftInput(searchET, InputMethodManager.SHOW_FORCED);
+                    Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE,Locale.getDefault());
+                    intent.putExtra(RecognizerIntent.EXTRA_PROMPT,"Say something&#8230;");
+                    try{
+                        startActivityForResult(intent,REQ_CODE_SPEECH_INPUT);
+                    }
+                    catch (ActivityNotFoundException e){
+                        Toast.makeText(getApplicationContext(),"Not Support",Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
 
@@ -325,13 +352,14 @@ public class HomeActivity extends AppCompatActivity
         }
         private void openSearchBar(String text){
             //set custom view on action bar
-            android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+            ActionBar actionBar = getSupportActionBar();
             assert actionBar != null;
             actionBar.setDisplayShowCustomEnabled(true);
             actionBar.setCustomView(R.layout.search_word_bar);
             actionBar.setDisplayShowTitleEnabled(false);
             // search edit text field setup.
             searchET = (EditText) actionBar.getCustomView().findViewById(R.id.search_word);
+
             searchET.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -369,7 +397,7 @@ public class HomeActivity extends AppCompatActivity
             // output list
             List<Word> wordsFiltered = new ArrayList<Word>();
             for(Word w :Storage.getInstance().loadWord()){
-                if(w.getWord().contains(query)){
+                if(w.getWord().toLowerCase().contains(query.toLowerCase())){
                     wordsFiltered.add(w);
                 }
             }
@@ -413,6 +441,9 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onStart() {
         super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
         loadWords();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -430,6 +461,19 @@ public class HomeActivity extends AppCompatActivity
         );
 
         AppIndex.AppIndexApi.start(client, viewAction);*/
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+//        Action viewAction2 = Action.newAction(
+//                Action.TYPE_VIEW, // TODO: choose an action type.
+//                "Home Page", // TODO: Define a title for the content shown.
+//                // TODO: If you have web page content that matches this app activity's content,
+//                // make sure this auto-generated web page URL is correct.
+//                // Otherwise, set the URL to null.
+//                Uri.parse("http://host/path"),
+//                // TODO: Make sure this auto-generated app deep link URI is correct.
+//                Uri.parse("android-app://com.example.wit.minidictionary.activities/http/host/path")
+//        );
+//        AppIndex.AppIndexApi.start(client, viewAction2);
     }
 
 
@@ -453,4 +497,15 @@ public class HomeActivity extends AppCompatActivity
         client.disconnect();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case REQ_CODE_SPEECH_INPUT:{
+                if(resultCode == RESULT_OK && null != data){
+//                    ArrayList<String> s = data.getStringArrayListExtra(RecognizerIntent.E)
+                }
+            }
+        }
+    }
 }

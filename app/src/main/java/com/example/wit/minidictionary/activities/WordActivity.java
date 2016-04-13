@@ -81,7 +81,7 @@ public class WordActivity extends AppCompatActivity {
         speakButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tts.speak(word.getWord(), TextToSpeech.QUEUE_ADD, null);
+                tts.speak(word.getWord(), TextToSpeech.QUEUE_FLUSH, null);
             }
         });
 
